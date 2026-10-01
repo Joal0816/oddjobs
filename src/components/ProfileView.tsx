@@ -28,7 +28,6 @@ export const ProfileView: React.FC = () => {
     openAuthModal, 
     switchAccount, 
     logout,
-    demoAccounts,
     reviews
   } = useApp();
 
@@ -102,22 +101,33 @@ export const ProfileView: React.FC = () => {
             </button>
           </div>
 
-          {/* Quick Demo Access Bar */}
+          {/* Quick Start */}
           <div className="mt-8 pt-6 border-t border-zinc-800/80">
             <p className="text-xs text-zinc-500 mb-3 font-semibold uppercase tracking-wider">
-              Or test immediately with a demo account:
+              Quick Start
             </p>
             <div className="flex flex-wrap justify-center gap-2">
-              {demoAccounts.map(demo => (
-                <button
-                  key={demo.id}
-                  onClick={() => switchAccount(demo.id)}
-                  className="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-zinc-900 border border-zinc-800 hover:border-amber-500 text-zinc-300 hover:text-white transition-all cursor-pointer flex items-center space-x-1.5"
-                >
-                  <span>{demo.name.split(' ')[0]}</span>
-                  <span className="text-[10px] text-amber-400">({demo.role})</span>
-                </button>
-              ))}
+              <button
+                onClick={() => switchAccount('user_charles')}
+                className="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-zinc-900 border border-zinc-800 hover:border-amber-500 text-zinc-300 hover:text-white transition-all cursor-pointer flex items-center space-x-1.5"
+              >
+                <span>Charles</span>
+                <span className="text-[10px] text-amber-400">(Student)</span>
+              </button>
+              <button
+                onClick={() => switchAccount('org_ssc')}
+                className="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-zinc-900 border border-zinc-800 hover:border-amber-500 text-zinc-300 hover:text-white transition-all cursor-pointer flex items-center space-x-1.5"
+              >
+                <span>SSC</span>
+                <span className="text-[10px] text-amber-400">(Requester)</span>
+              </button>
+              <button
+                onClick={() => switchAccount('admin_msuiit')}
+                className="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-zinc-900 border border-zinc-800 hover:border-amber-500 text-zinc-300 hover:text-white transition-all cursor-pointer flex items-center space-x-1.5"
+              >
+                <span>Admin</span>
+                <span className="text-[10px] text-amber-400">(Mod)</span>
+              </button>
             </div>
           </div>
         </div>
@@ -165,22 +175,23 @@ export const ProfileView: React.FC = () => {
         </div>
 
         <div className="flex items-center space-x-2">
-          {/* Quick Demo Switchers */}
+          {/* Quick Account Switchers */}
           <div className="hidden sm:flex items-center space-x-1">
-            {demoAccounts.map(demo => {
-              const isActive = currentUser.id === demo.id;
+            {['user_charles', 'org_ssc', 'admin_msuiit'].map(id => {
+              const isActive = currentUser.id === id;
+              const label = id === 'user_charles' ? 'Charles' : id === 'org_ssc' ? 'SSC' : 'Admin';
               return (
                 <button
-                  key={demo.id}
-                  onClick={() => switchAccount(demo.id)}
+                  key={id}
+                  onClick={() => switchAccount(id)}
                   className={`px-2.5 py-1 rounded-lg text-[10px] font-bold transition-all cursor-pointer ${
                     isActive
                       ? 'bg-amber-500 text-black shadow-xs'
                       : 'bg-zinc-900 text-zinc-400 hover:text-white border border-zinc-800 hover:border-zinc-700'
                   }`}
-                  title={`Switch to ${demo.name} (${demo.role})`}
+                  title={`Switch to ${label}`}
                 >
-                  {demo.name.split(' ')[0]}
+                  {label}
                 </button>
               );
             })}

@@ -301,7 +301,7 @@ export const CAMPUS_TESTIMONIALS: CampusTestimonial[] = [
     paymentMethod: 'GCash Escrow',
     payoutStatus: 'Released in 15 mins',
     badge: 'Verified Student Freelancer',
-    quote: 'I funded my entire prelim exam fees by taking coding gigs between my CCS Lab classes. Having simulated escrow means no more chasing down requesters for payment—it\'s automatic upon sign-off.',
+    quote: 'I funded my entire prelim exam fees by taking coding gigs between my CCS Lab classes. Having escrow protection means no more chasing down requesters for payment—it\'s automatic upon sign-off.',
     highlight: 'Funded exam fees between CCS lab classes',
     date: '3 days ago',
     department: 'College of Computer Studies (CCS)',
@@ -539,7 +539,7 @@ export const INITIAL_REVIEWS: Review[] = [
     createdAt: '2 weeks ago'
   },
 
-  // Reviews for Admin / Moderator demo
+  // Reviews for Admin / Moderator
   {
     id: 'rev_admin_1',
     jobId: 'job_disp_0',

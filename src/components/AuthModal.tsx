@@ -20,10 +20,8 @@ export const AuthModal: React.FC = () => {
     authModalOpen, 
     authModalTab, 
     closeAuthModal, 
-    login,
     loginWithCredentials, 
-    registerUser,
-    demoAccounts
+    registerUser
   } = useApp();
 
   const [activeTab, setActiveTab] = useState<'signin' | 'signup'>(authModalTab);
@@ -336,27 +334,57 @@ export const AuthModal: React.FC = () => {
           </form>
         )}
 
-        {/* Fast Persona Quick-Fill */}
+        {/* Quick Start */}
         <div className="mt-6 pt-5 border-t border-zinc-800/80">
           <p className="text-[11px] font-semibold text-zinc-400 mb-2.5">
-            Quick Persona Preview
+            Quick Start
           </p>
           <div className="grid grid-cols-3 gap-2">
-            {demoAccounts.slice(0, 3).map(acc => (
-              <button
-                key={acc.id}
-                type="button"
-                onClick={() => login(acc)}
-                className="p-2 rounded-xl bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 hover:border-amber-500/40 text-left transition-colors cursor-pointer group"
-              >
-                <p className="text-[11px] font-bold text-white group-hover:text-amber-300 truncate">
-                  {acc.role === 'admin' ? 'Admin' : acc.role === 'requester' ? 'Requester' : 'Student'}
-                </p>
-                <p className="text-[10px] text-zinc-400 truncate">
-                  {acc.name.split(' ')[0]}
-                </p>
-              </button>
-            ))}
+            <button
+              type="button"
+              onClick={() => {
+                setSignInEmail('charles.caballes@g.msuiit.edu.ph');
+                setSignInPassword('password123');
+              }}
+              className="p-2 rounded-xl bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 hover:border-amber-500/40 text-left transition-colors cursor-pointer group"
+            >
+              <p className="text-[11px] font-bold text-white group-hover:text-amber-300 truncate">
+                Student
+              </p>
+              <p className="text-[10px] text-zinc-400 truncate">
+                Charles C.
+              </p>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setSignInEmail('ssc@g.msuiit.edu.ph');
+                setSignInPassword('password123');
+              }}
+              className="p-2 rounded-xl bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 hover:border-amber-500/40 text-left transition-colors cursor-pointer group"
+            >
+              <p className="text-[11px] font-bold text-white group-hover:text-amber-300 truncate">
+                Requester
+              </p>
+              <p className="text-[10px] text-zinc-400 truncate">
+                SSC MSU-IIT
+              </p>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setSignInEmail('admin@g.msuiit.edu.ph');
+                setSignInPassword('password123');
+              }}
+              className="p-2 rounded-xl bg-zinc-900/80 hover:bg-zinc-800 border border-zinc-800 hover:border-amber-500/40 text-left transition-colors cursor-pointer group"
+            >
+              <p className="text-[11px] font-bold text-white group-hover:text-amber-300 truncate">
+                Admin
+              </p>
+              <p className="text-[10px] text-zinc-400 truncate">
+                Moderator
+              </p>
+            </button>
           </div>
         </div>
       </div>

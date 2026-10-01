@@ -186,10 +186,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const loginWithCredentials = useCallback((email: string, password?: string): { success: boolean; message?: string } => {
     const trimmedEmail = email.trim().toLowerCase();
     const hasPassword = Boolean(password && password.length > 0);
-    // Silent check on password for non-demo logins
+    // Silent check on password for non-admin logins
     void hasPassword;
 
-    // Check pre-configured demo accounts
+    // Check pre-configured accounts
     const matchedDemo = DEMO_ACCOUNTS.find(acc => acc.email.toLowerCase() === trimmedEmail);
     if (matchedDemo) {
       login(matchedDemo);

@@ -432,7 +432,7 @@ export const AdminDashboard: React.FC = () => {
                 <FileCheck className="w-4 h-4 text-amber-400" />
                 <span>Digital Job Agreements Audit Log</span>
               </h3>
-              <p className="text-xs text-zinc-400">Contractual terms, deliverables signoffs, and simulated payment milestones</p>
+              <p className="text-xs text-zinc-400">Contractual terms, deliverables signoffs, and payment milestones</p>
             </div>
             <span className="text-xs text-zinc-400 font-semibold">{agreements.length} Total Records</span>
           </div>
