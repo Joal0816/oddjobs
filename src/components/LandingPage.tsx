@@ -16,6 +16,7 @@ import Image from 'next/image';
 import { CampusReviews } from './CampusReviews';
 
 export const LandingPage: React.FC = () => {
+  // Simplified, user-tailored landing page
   const { 
     setActiveTab, 
     setSelectedJob, 

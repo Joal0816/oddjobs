@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 const readline = require('readline');
-const chalk = require('chalk');
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -9,6 +8,15 @@ const rl = readline.createInterface({
 });
 
 const version = '1.1.0';
+
+// Zero-dependency ANSI colors
+const amber = '\x1b[38;5;214m';
+const cyan = '\x1b[36m';
+const green = '\x1b[32m';
+const red = '\x1b[31m';
+const gray = '\x1b[90m';
+const reset = '\x1b[0m';
+const bold = '\x1b[1m';
 
 // Responsive terminal width detection
 function termWidth() {
@@ -19,30 +27,26 @@ function isNarrow() {
   return termWidth() < 60;
 }
 
-function separator() {
-  return chalk.gray('  ' + '═'.repeat(Math.min(termWidth() - 4, 50)));
-}
-
 function wideBanner() {
-  console.log(chalk.bold.amber(`
+  console.log(`${bold}${amber}
   ██████╗ ██████╗ ██████╗      ██╗ ██████╗ ██████╗ ███████╗
  ██╔═══██╗██╔══██╗██╔══██╗     ██║██╔═══██╗██╔══██╗██╔════╝
  ██║   ██║██║  ██║██║  ██║     ██║██║   ██║██████╔╝███████╗
  ██║   ██║██║  ██║██║  ██║██   ██║██║   ██║██╔══██╗╚════██║
  ╚██████╔╝██████╔╝██████╔╝╚█████╔╝╚██████╔╝██████╔╝███████║
   ╚═════╝ ╚═════╝ ╚═════╝  ╚════╝  ╚═════╝ ╚═════╝ ╚══════╝
-  `));
+  ${reset}`);
 }
 
 function narrowBanner() {
-  console.log(chalk.bold.amber(`
+  console.log(`${bold}${amber}
    ██████╗ ██████╗ ██████╗
   ██╔═══██╗██╔══██╗██╔══██╗
   ██║   ██║██║  ██║██║  ██║
   ██║   ██║██║  ██║██║  ██║
   ╚██████╔╝██████╔╝██████╔╝
    ╚═════╝ ╚═════╝ ╚═════╝
-  `));
+  ${reset}`);
 }
 
 function printBanner() {
@@ -51,22 +55,22 @@ function printBanner() {
   } else {
     wideBanner();
   }
-  console.log(chalk.gray('  MSU-IIT Student Workforce Marketplace CLI v' + version));
-  console.log(chalk.gray('  Type "help" for available commands\n'));
+  console.log(`${gray}  MSU-IIT Student Workforce Marketplace CLI v${version}${reset}`);
+  console.log(`${gray}  Type "help" for available commands\n${reset}`);
 }
 
 function printHelp() {
-  console.log(chalk.bold('\n  Available Commands:\n'));
-  console.log(chalk.cyan('  browse [category]') + chalk.gray('     - List available jobs'));
-  console.log(chalk.cyan('  post') + chalk.gray('                  - Post a new job (interactive)'));
-  console.log(chalk.cyan('  profile') + chalk.gray('               - View your profile & stats'));
-  console.log(chalk.cyan('  connect') + chalk.gray('               - Find random campus connections'));
-  console.log(chalk.cyan('  escrow') + chalk.gray('                - Check escrow status'));
-  console.log(chalk.cyan('  search <query>') + chalk.gray('       - Search jobs by keyword'));
-  console.log(chalk.cyan('  notify') + chalk.gray('                - Check notifications'));
-  console.log(chalk.cyan('  clear') + chalk.gray('                 - Clear terminal'));
-  console.log(chalk.cyan('  help') + chalk.gray('                  - Show this help'));
-  console.log(chalk.cyan('  exit') + chalk.gray('                  - Exit the CLI\n'));
+  console.log(`${bold}\n  Available Commands:\n${reset}`);
+  console.log(`${cyan}  browse [category]${reset}${gray}     - List available jobs${reset}`);
+  console.log(`${cyan}  post${reset}${gray}                  - Post a new job (interactive)${reset}`);
+  console.log(`${cyan}  profile${reset}${gray}               - View your profile & stats${reset}`);
+  console.log(`${cyan}  connect${reset}${gray}               - Find random campus connections${reset}`);
+  console.log(`${cyan}  escrow${reset}${gray}                - Check escrow status${reset}`);
+  console.log(`${cyan}  search <query>${reset}${gray}       - Search jobs by keyword${reset}`);
+  console.log(`${cyan}  notify${reset}${gray}                - Check notifications${reset}`);
+  console.log(`${cyan}  clear${reset}${gray}                 - Clear terminal${reset}`);
+  console.log(`${cyan}  help${reset}${gray}                  - Show this help${reset}`);
+  console.log(`${cyan}  exit${reset}${gray}                  - Exit the CLI\n${reset}`);
 }
 
 const jobs = [
@@ -92,28 +96,28 @@ function cmdBrowse(args) {
     ? jobs.filter(j => j.category.toLowerCase().includes(category) || j.title.toLowerCase().includes(category))
     : jobs;
 
-  console.log(chalk.bold('\n  ═══ Available Jobs ═══\n'));
+  console.log(`${bold}\n  ═══ Available Jobs ═══\n${reset}`);
   if (filtered.length === 0) {
-    console.log(chalk.gray('  No jobs found matching your criteria.\n'));
+    console.log(`${gray}  No jobs found matching your criteria.\n${reset}`);
     return;
   }
 
   if (isNarrow()) {
     filtered.forEach(job => {
-      console.log(chalk.cyan(`  [${job.id}] ${job.title}`));
-      console.log(chalk.gray(`      ${job.category}`));
-      console.log(chalk.green(`      ₱${job.budget}\n`));
+      console.log(`${cyan}  [${job.id}] ${job.title}${reset}`);
+      console.log(`${gray}      ${job.category}${reset}`);
+      console.log(`${green}      ₱${job.budget}\n${reset}`);
     });
   } else {
     filtered.forEach(job => {
-      console.log(chalk.cyan(`  [${job.id}] ${job.title}`));
-      console.log(chalk.gray(`      Category: ${job.category}`));
-      console.log(chalk.green(`      Budget: ₱${job.budget}`));
-      console.log(chalk.gray(`      Location: ${job.location}`));
-      console.log(chalk.gray(`      Status: ${job.status}\n`));
+      console.log(`${cyan}  [${job.id}] ${job.title}${reset}`);
+      console.log(`${gray}      Category: ${job.category}${reset}`);
+      console.log(`${green}      Budget: ₱${job.budget}${reset}`);
+      console.log(`${gray}      Location: ${job.location}${reset}`);
+      console.log(`${gray}      Status: ${job.status}\n${reset}`);
     });
   }
-  console.log(chalk.gray(`  Showing ${filtered.length} job(s)\n`));
+  console.log(`${gray}  Showing ${filtered.length} job(s)\n${reset}`);
 }
 
 function cmdPost() {
@@ -129,20 +133,20 @@ function cmdPost() {
 
   function askNext() {
     if (qi >= questions.length) {
-      console.log(chalk.green('\r  ✓ Job posted successfully!          \n'));
-      console.log(chalk.bold('  ═══ Job Posted ═══\n'));
-      console.log(chalk.cyan(`  Title: ${answers.title}`));
-      console.log(chalk.gray(`  Category: ${answers.category}`));
-      console.log(chalk.green(`  Budget: ₱${answers.budget}`));
-      console.log(chalk.gray(`  Description: ${answers.description}\n`));
+      console.log(`${green}\r  ✓ Job posted successfully!          \n${reset}`);
+      console.log(`${bold}  ═══ Job Posted ═══\n${reset}`);
+      console.log(`${cyan}  Title: ${answers.title}${reset}`);
+      console.log(`${gray}  Category: ${answers.category}${reset}`);
+      console.log(`${green}  Budget: ₱${answers.budget}${reset}`);
+      console.log(`${gray}  Description: ${answers.description}\n${reset}`);
       prompt();
       return;
     }
 
     const q = questions[qi];
-    rl.question(chalk.yellow(q.message), (answer) => {
+    rl.question(`${amber}  ${q.message}${reset}`, (answer) => {
       if (q.validate && !q.validate(answer)) {
-        console.log(chalk.red('  Invalid input, try again.'));
+        console.log(`${red}  Invalid input, try again.${reset}`);
         askNext();
         return;
       }
@@ -152,80 +156,80 @@ function cmdPost() {
     });
   }
 
-  console.log(chalk.bold('\n  ═══ Post a New Job ═══\n'));
+  console.log(`${bold}\n  ═══ Post a New Job ═══\n${reset}`);
   askNext();
 }
 
 function cmdProfile() {
-  console.log(chalk.bold('\n  ═══ Your Profile ═══\n'));
-  console.log(chalk.cyan('  Name: Charles Caballes'));
-  console.log(chalk.gray('  Role: Student Worker'));
-  console.log(chalk.gray('  University: MSU-IIT'));
-  console.log(chalk.gray('  Course: BS Computer Applications'));
-  console.log(chalk.gray('  Year: 3rd Year\n'));
-  console.log(chalk.green('  Rating: 4.9/5.0 ★'));
-  console.log(chalk.green('  Jobs Completed: 12'));
-  console.log(chalk.green('  Total Earnings: ₱15,400'));
-  console.log(chalk.green('  Campus Trust: 100%\n'));
+  console.log(`${bold}\n  ═══ Your Profile ═══\n${reset}`);
+  console.log(`${cyan}  Name: Charles Caballes${reset}`);
+  console.log(`${gray}  Role: Student Worker${reset}`);
+  console.log(`${gray}  University: MSU-IIT${reset}`);
+  console.log(`${gray}  Course: BS Computer Applications${reset}`);
+  console.log(`${gray}  Year: 3rd Year\n${reset}`);
+  console.log(`${green}  Rating: 4.9/5.0 ★${reset}`);
+  console.log(`${green}  Jobs Completed: 12${reset}`);
+  console.log(`${green}  Total Earnings: ₱15,400${reset}`);
+  console.log(`${green}  Campus Trust: 100%\n${reset}`);
 }
 
 function cmdConnect() {
-  console.log(chalk.gray('\n  Finding connections...'));
+  console.log(`${gray}\n  Finding connections...${reset}`);
 
   setTimeout(() => {
     const online = connections.filter(c => c.online);
     const match = online[Math.floor(Math.random() * online.length)];
-    console.log(chalk.green('  ✓ Connection found!\n'));
-    console.log(chalk.bold('  ═══ New Connection ═══\n'));
-    console.log(chalk.cyan(`  Name: ${match.name}`));
-    console.log(chalk.gray(`  Role: ${match.role}`));
-    console.log(chalk.gray(`  Interests: ${match.interests.join(', ')}`));
-    console.log(chalk.green(`  Status: Online\n`));
+    console.log(`${green}  ✓ Connection found!\n${reset}`);
+    console.log(`${bold}  ═══ New Connection ═══\n${reset}`);
+    console.log(`${cyan}  Name: ${match.name}${reset}`);
+    console.log(`${gray}  Role: ${match.role}${reset}`);
+    console.log(`${gray}  Interests: ${match.interests.join(', ')}${reset}`);
+    console.log(`${green}  Status: Online\n${reset}`);
     prompt();
   }, 1500);
 }
 
 function cmdEscrow() {
-  console.log(chalk.bold('\n  ═══ Escrow Status ═══\n'));
-  console.log(chalk.green('  Active Escrows: 3'));
-  console.log(chalk.green('  Total in Escrow: ₱4,350'));
-  console.log(chalk.green('  Completed: 12'));
-  console.log(chalk.green('  Total Paid Out: ₱15,400\n'));
-  console.log(chalk.gray('  All transactions protected by'));
-  console.log(chalk.gray('  MSU-IIT institutional verification.\n'));
+  console.log(`${bold}\n  ═══ Escrow Status ═══\n${reset}`);
+  console.log(`${green}  Active Escrows: 3${reset}`);
+  console.log(`${green}  Total in Escrow: ₱4,350${reset}`);
+  console.log(`${green}  Completed: 12${reset}`);
+  console.log(`${green}  Total Paid Out: ₱15,400\n${reset}`);
+  console.log(`${gray}  All transactions protected by${reset}`);
+  console.log(`${gray}  MSU-IIT institutional verification.\n${reset}`);
 }
 
 function cmdSearch(args) {
   const query = args.join(' ').toLowerCase();
   if (!query) {
-    console.log(chalk.yellow('  Usage: search <keyword>\n'));
+    console.log(`${amber}  Usage: search <keyword>\n${reset}`);
     return;
   }
   const results = jobs.filter(j =>
     j.title.toLowerCase().includes(query) ||
     j.category.toLowerCase().includes(query)
   );
-  console.log(chalk.bold(`\n  ═══ Search: "${args.join(' ')}" ═══\n`));
+  console.log(`${bold}\n  ═══ Search: "${args.join(' ')}" ═══\n${reset}`);
   if (results.length === 0) {
-    console.log(chalk.gray('  No results found.\n'));
+    console.log(`${gray}  No results found.\n${reset}`);
     return;
   }
   results.forEach(job => {
-    console.log(chalk.cyan(`  [${job.id}] ${job.title}`));
-    console.log(chalk.gray(`      ${job.category} • ₱${job.budget}\n`));
+    console.log(`${cyan}  [${job.id}] ${job.title}${reset}`);
+    console.log(`${gray}      ${job.category} • ₱${job.budget}\n${reset}`);
   });
 }
 
 function cmdNotify() {
-  console.log(chalk.bold('\n  ═══ Notifications ═══\n'));
-  console.log(chalk.green('  ● New job match: "Laravel Developer"'));
-  console.log(chalk.green('  ● Payment received: ₱1,200 from SSC'));
-  console.log(chalk.green('  ● New connection: Derrick Tan'));
-  console.log(chalk.gray('  ● Reminder: Calculus 2 session tomorrow\n'));
+  console.log(`${bold}\n  ═══ Notifications ═══\n${reset}`);
+  console.log(`${green}  ● New job match: "Laravel Developer"${reset}`);
+  console.log(`${green}  ● Payment received: ₱1,200 from SSC${reset}`);
+  console.log(`${green}  ● New connection: Derrick Tan${reset}`);
+  console.log(`${gray}  ● Reminder: Calculus 2 session tomorrow\n${reset}`);
 }
 
 function prompt() {
-  rl.question(chalk.bold.amber('  oddjobs> '), (input) => {
+  rl.question(`${bold}${amber}  oddjobs> ${reset}`, (input) => {
     const trimmed = input.trim();
     if (!trimmed) {
       prompt();
@@ -246,12 +250,12 @@ function prompt() {
       case 'clear': console.clear(); printBanner(); prompt(); break;
       case 'help': printHelp(); prompt(); break;
       case 'exit': case 'quit':
-        console.log(chalk.gray('\n  Goodbye! 👋\n'));
+        console.log(`${gray}\n  Goodbye! 👋\n${reset}`);
         rl.close();
         break;
       default:
-        console.log(chalk.red(`  Unknown command: ${command}`));
-        console.log(chalk.gray('  Type "help" for available commands\n'));
+        console.log(`${red}  Unknown command: ${command}${reset}`);
+        console.log(`${gray}  Type "help" for available commands\n${reset}`);
         prompt();
     }
   });

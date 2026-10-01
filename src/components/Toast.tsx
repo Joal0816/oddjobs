@@ -108,9 +108,6 @@ export const Toast: React.FC = () => {
         <div className="absolute bottom-0 inset-x-0 h-0.5 bg-zinc-800 overflow-hidden">
           <div 
             className={`h-full ${theme.progressColor} animate-[shrink_4.2s_linear_forwards]`}
-            style={{
-              animation: 'width 4.2s linear forwards'
-            }}
           />
         </div>
       </div>
