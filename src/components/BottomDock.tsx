@@ -10,11 +10,12 @@ import {
   FileText, 
   User as UserIcon, 
   Sparkles,
-  ShieldCheck
+  ShieldCheck,
+  Cpu
 } from 'lucide-react';
 import Image from 'next/image';
 
-type TabType = 'landing' | 'home' | 'jobs' | 'post' | 'connect' | 'agreement' | 'profile' | 'admin';
+type TabType = 'landing' | 'home' | 'jobs' | 'post' | 'connect' | 'agreement' | 'profile' | 'admin' | 'compute';
 
 export const BottomDock: React.FC = () => {
   const { activeTab, setActiveTab, currentUser, isAuthenticated } = useApp();
@@ -26,6 +27,7 @@ export const BottomDock: React.FC = () => {
     { id: 'post', label: 'Post Gig', icon: PlusSquare },
     { id: 'connect', label: 'Collab', icon: Users },
     { id: 'agreement', label: 'Agreements', icon: FileText },
+    { id: 'compute', label: 'Cloud', icon: Cpu },
   ];
 
   if (currentUser.role === 'admin') {
@@ -35,10 +37,10 @@ export const BottomDock: React.FC = () => {
   baseTabs.push({ id: 'profile', label: 'Profile', icon: UserIcon });
 
   return (
-    <div className="fixed bottom-3 sm:bottom-4 inset-x-0 z-40 flex justify-center px-4 pointer-events-none">
+    <div className="fixed bottom-3 sm:bottom-4 inset-x-0 z-40 flex justify-center px-2 sm:px-4 pointer-events-none">
       <nav 
         aria-label="Bottom Navigation"
-        className="pointer-events-auto flex items-center space-x-1 sm:space-x-1.5 px-3 py-1.5 sm:py-2 rounded-full bg-[#101016]/95 border border-zinc-800/90 shadow-[0_12px_40px_rgba(0,0,0,0.9),0_0_20px_rgba(245,158,11,0.12)] backdrop-blur-xl"
+        className="pointer-events-auto flex items-center space-x-0.5 sm:space-x-1.5 px-2 sm:px-3 py-1.5 sm:py-2 rounded-full bg-[#101016]/95 border border-zinc-800/90 shadow-[0_12px_40px_rgba(0,0,0,0.9),0_0_20px_rgba(245,158,11,0.12)] backdrop-blur-xl max-w-full overflow-x-auto scrollbar-none"
       >
         {baseTabs.map((tab) => {
           const Icon = tab.icon;
@@ -49,7 +51,7 @@ export const BottomDock: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`relative flex flex-col items-center justify-center px-2.5 sm:px-3.5 py-1 rounded-full transition-all duration-150 group cursor-pointer ${
+              className={`relative flex flex-col items-center justify-center px-2 sm:px-3.5 py-1 rounded-full transition-all duration-150 group cursor-pointer ${
                 isActive 
                   ? 'text-amber-400 font-bold' 
                   : 'text-zinc-400 hover:text-zinc-200'

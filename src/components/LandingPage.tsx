@@ -10,7 +10,8 @@ import {
   MapPin, 
   Sparkles,
   LogOut,
-  ChevronRight
+  ChevronRight,
+  Cpu
 } from 'lucide-react';
 import Image from 'next/image';
 import { CampusReviews } from './CampusReviews';
@@ -82,6 +83,13 @@ export const LandingPage: React.FC = () => {
               className="hover:text-amber-400 transition-colors cursor-pointer"
             >
               Peer Collab
+            </button>
+            <button 
+              onClick={() => setActiveTab('compute')}
+              className="hover:text-cyan-400 flex items-center gap-1.5 transition-colors cursor-pointer text-zinc-400"
+            >
+              <Cpu className="w-3.5 h-3.5 text-cyan-400" />
+              Cloud/Edge
             </button>
           </nav>
 
@@ -374,6 +382,10 @@ export const LandingPage: React.FC = () => {
             <button onClick={() => setActiveTab('jobs')} className="hover:text-amber-400 transition-colors">Browse Gigs</button>
             <button onClick={() => setActiveTab('agreement')} className="hover:text-amber-400 transition-colors">Agreements</button>
             <button onClick={() => setActiveTab('connect')} className="hover:text-amber-400 transition-colors">Peer Collab</button>
+            <button onClick={() => setActiveTab('compute')} className="hover:text-cyan-400 transition-colors flex items-center gap-1">
+              <Cpu className="w-3 h-3 text-cyan-400" />
+              Cloud/Edge
+            </button>
             <span className="text-zinc-600">|</span>
             <span className="text-zinc-500">© 2026 Technopreneurship Capstone</span>
           </div>

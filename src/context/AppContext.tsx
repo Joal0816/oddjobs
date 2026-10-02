@@ -50,8 +50,11 @@ interface AppContextType {
   reviewModalState: { isOpen: boolean; agreementId?: string; toUserId: string; toUserName: string; jobTitle: string } | null;
   openReviewModal: (params: { agreementId?: string; toUserId: string; toUserName: string; jobTitle: string }) => void;
   closeReviewModal: () => void;
-  activeTab: 'landing' | 'home' | 'jobs' | 'post' | 'connect' | 'agreement' | 'profile' | 'admin';
-  setActiveTab: (tab: 'landing' | 'home' | 'jobs' | 'post' | 'connect' | 'agreement' | 'profile' | 'admin') => void;
+  activeTab: 'landing' | 'home' | 'jobs' | 'post' | 'connect' | 'agreement' | 'profile' | 'admin' | 'compute';
+  setActiveTab: (tab: 'landing' | 'home' | 'jobs' | 'post' | 'connect' | 'agreement' | 'profile' | 'admin' | 'compute') => void;
+  isCloudUnlocked: boolean;
+  unlockCloud: (password: string) => boolean;
+  lockCloud: () => void;
   selectedJob: Job | null;
   setSelectedJob: (job: Job | null) => void;
   toggleSaveJob: (jobId: string) => void;
@@ -106,7 +109,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     toUserName: string;
     jobTitle: string;
   } | null>(null);
-  const [activeTab, setActiveTab] = useState<'landing' | 'home' | 'jobs' | 'post' | 'connect' | 'agreement' | 'profile' | 'admin'>('landing');
+  const [activeTab, setActiveTab] = useState<'landing' | 'home' | 'jobs' | 'post' | 'connect' | 'agreement' | 'profile' | 'admin' | 'compute'>('landing');
+  const [isCloudUnlocked, setIsCloudUnlocked] = useState<boolean>(false);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
 
   const showToast = useCallback((toastData: { type?: 'success' | 'info' | 'warning' | 'error'; title: string; message?: string }) => {
@@ -146,6 +150,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setIsAuthenticated(storedAuth === 'true');
       } else {
         setIsAuthenticated(true);
+      }
+
+      const storedCloudUnlocked = localStorage.getItem('oddjobs_cloud_unlocked');
+      if (storedCloudUnlocked === 'true') {
+        setIsCloudUnlocked(true);
       }
     } catch {
       // ignore
@@ -664,6 +673,47 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
+  const unlockCloud = useCallback((password: string): boolean => {
+    if (password === 'oink#2026') {
+      setIsCloudUnlocked(true);
+      try {
+        localStorage.setItem('oddjobs_cloud_unlocked', 'true');
+      } catch {}
+      try {
+        confetti({
+          particleCount: 65,
+          spread: 55,
+          origin: { y: 0.5 }
+        });
+      } catch {}
+      showToast({
+        type: 'success',
+        title: 'Cluster Access Granted',
+        message: 'Connected to MSU-IIT Edge & Cloud Computing Fabric (oink#2026 verified).'
+      });
+      return true;
+    } else {
+      showToast({
+        type: 'error',
+        title: 'Access Denied',
+        message: 'Access denied: Invalid compute token/password.'
+      });
+      return false;
+    }
+  }, [showToast]);
+
+  const lockCloud = useCallback(() => {
+    setIsCloudUnlocked(false);
+    try {
+      localStorage.removeItem('oddjobs_cloud_unlocked');
+    } catch {}
+    showToast({
+      type: 'info',
+      title: 'Console Locked',
+      message: 'Edge & Cloud Computing Console has been re-locked.'
+    });
+  }, [showToast]);
+
   const openReviewModal = useCallback((params: {
     agreementId?: string;
     toUserId: string;
@@ -790,6 +840,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         rejectVerification,
         requestStudentVerification,
         verifyStudent,
+        isCloudUnlocked,
+        unlockCloud,
+        lockCloud,
       }}
     >
       {children}
