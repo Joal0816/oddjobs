@@ -10,7 +10,9 @@ import {
   MapPin, 
   Sparkles,
   LogOut,
-  ChevronRight
+  ChevronRight,
+  Link2,
+  RefreshCw
 } from 'lucide-react';
 import Image from 'next/image';
 import { CampusReviews } from './CampusReviews';
@@ -337,6 +339,69 @@ export const LandingPage: React.FC = () => {
 
         {/* Testimonials */}
         <CampusReviews />
+
+        {/* Organizations: automatic career page import */}
+        <section className="my-14 sm:my-20">
+          <div className="mb-8">
+            <span className="text-xs uppercase font-extrabold tracking-wider text-amber-400 block mb-1">
+              For Departments & Orgs
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              Hiring Without the Manual Posting
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+            <div className="p-6 rounded-3xl bg-zinc-900/60 border border-zinc-800 hover:border-amber-500/40 transition-all flex flex-col justify-between shadow-lg">
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center mb-4">
+                  <Link2 className="w-5 h-5 stroke-[2.5]" />
+                </div>
+                <h3 className="text-base font-bold text-white mb-2">Paste your URL once</h3>
+                <p className="text-xs text-zinc-400 leading-relaxed">
+                  Add the public career page for your department, org, or campus shop once. oddJobs reads it from there. No job board to log into, no posts to copy over, no posting schedule for your team to keep.
+                </p>
+              </div>
+              <div className="mt-6 flex items-center text-xs font-semibold text-amber-400">
+                <span>One link, zero busywork</span>
+              </div>
+            </div>
+
+            <div className="p-6 rounded-3xl bg-zinc-900/60 border border-zinc-800 hover:border-amber-500/40 transition-all flex flex-col justify-between shadow-lg">
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-sky-500/10 border border-sky-500/20 text-sky-400 flex items-center justify-center mb-4">
+                  <ShieldCheck className="w-5 h-5 stroke-[2.5]" />
+                </div>
+                <h3 className="text-base font-bold text-white mb-2">Safe for your site</h3>
+                <p className="text-xs text-zinc-400 leading-relaxed">
+                  We read only the public pages your org owns and invites search engines to index. We honor robots.txt, stay rate-limited, and send one request at a time with a real User-Agent. Your server stays unblocked. So does ours.
+                </p>
+              </div>
+              <div className="mt-6 flex items-center text-xs font-semibold text-sky-400">
+                <span>robots.txt compliant by default</span>
+              </div>
+            </div>
+
+            <div className="p-6 rounded-3xl bg-zinc-900/60 border border-zinc-800 hover:border-amber-500/40 transition-all flex flex-col justify-between shadow-lg">
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mb-4">
+                  <RefreshCw className="w-5 h-5 stroke-[2.5]" />
+                </div>
+                <h3 className="text-base font-bold text-white mb-2">Openings appear on their own</h3>
+                <p className="text-xs text-zinc-400 leading-relaxed">
+                  New openings from your page land on oddJobs without anyone on your team touching a form. Students find them next to every other campus gig, backed by verified IDs and escrow.
+                </p>
+              </div>
+              <div className="mt-6 flex items-center text-xs font-semibold text-emerald-400">
+                <span>Your team posts nothing</span>
+              </div>
+            </div>
+          </div>
+
+          <p className="mt-5 text-[11px] text-zinc-500 leading-relaxed max-w-3xl">
+            Public hiring pages only. We never read Facebook, Instagram, or LinkedIn feeds. Want us to stop reading your page? Say so and we stop.
+          </p>
+        </section>
 
         {/* Clean Call To Action */}
         <section className="my-16 sm:my-24 p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-transparent border border-amber-500/30 flex flex-col sm:flex-row items-center justify-between gap-6">

@@ -56,6 +56,7 @@ interface AppContextType {
   setSelectedJob: (job: Job | null) => void;
   toggleSaveJob: (jobId: string) => void;
   postJob: (job: Omit<Job, 'id' | 'postedAt' | 'requesterId' | 'requesterName' | 'requesterAvatar' | 'applicantCount' | 'status'>) => void;
+  addJobs: (jobs: Job[]) => void;
   applyToJob: (jobId: string, proposal: string, proposedPrice: number, estimatedTime: string) => boolean;
   createAgreement: (jobId: string, applicant: Application, deliverables: string[], revisionTerms: string, paymentMethod: 'GCash' | 'Cash on Campus' | 'Simulated Protected Payment') => void;
   completeAgreement: (agreementId: string, submissionUrl: string, notes: string) => void;
@@ -404,6 +405,41 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     });
 
     setActiveTab('jobs');
+  };
+
+  // Merge crawled/imported jobs into the feed (dedupe by id, persist like postJob).
+  const addJobs = (incoming: Job[]) => {
+    if (!incoming || incoming.length === 0) return;
+
+    const seen = new Set<string>();
+    const fresh: Job[] = [];
+    for (const job of incoming) {
+      if (!job || !job.id || seen.has(job.id)) continue;
+      seen.add(job.id);
+      if (jobs.some((existing) => existing.id === job.id)) continue;
+      fresh.push(job);
+    }
+
+    if (fresh.length === 0) {
+      showToast({
+        type: 'info',
+        title: 'Nothing New to Import',
+        message: 'Those postings are already in your job feed.'
+      });
+      return;
+    }
+
+    const updated = [...fresh, ...jobs];
+    setJobs(updated);
+    try {
+      localStorage.setItem('oddjobs_jobs', JSON.stringify(updated));
+    } catch {}
+
+    showToast({
+      type: 'success',
+      title: `${fresh.length} Job${fresh.length === 1 ? '' : 's'} Imported`,
+      message: 'Career-page postings were added to the job feed.'
+    });
   };
 
   const applyToJob = (jobId: string, proposal: string, proposedPrice: number, estimatedTime: string): boolean => {
@@ -780,6 +816,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setSelectedJob,
         toggleSaveJob,
         postJob,
+        addJobs,
         applyToJob,
         createAgreement,
         completeAgreement,

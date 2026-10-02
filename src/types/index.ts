@@ -40,6 +40,40 @@ export interface Job {
   applicantCount: number;
 }
 
+/** Which rung of the career-page extraction ladder produced the jobs. */
+export type CrawlSource = 'json-ld' | 'microdata' | 'ats' | 'selectors';
+
+/** API-facing failure reasons for POST /api/crawl (never a stack trace). */
+export type CrawlFailureReason =
+  | 'invalid_url'
+  | 'blocked_by_robots'
+  | 'robots_unavailable'
+  | 'crawl_delay_too_long'
+  | 'rate_limited'
+  | 'origin_halted'
+  | 'challenge'
+  | 'timeout'
+  | 'unreachable'
+  | 'server_error'
+  | 'not_found'
+  | 'not_html'
+  | 'too_many_redirects'
+  | 'internal';
+
+/** Response shape for POST /api/crawl. */
+export interface CrawlResult {
+  ok: boolean;
+  origin: string;
+  robotsAllowed: boolean;
+  unchanged: boolean;
+  jobs: Job[];
+  skipped: number;
+  source: CrawlSource | null;
+  crawledAt: string;
+  reason?: CrawlFailureReason | null;
+  notes: string;
+}
+
 export interface Application {
   id: string;
   jobId: string;
