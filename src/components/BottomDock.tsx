@@ -10,12 +10,11 @@ import {
   FileText, 
   User as UserIcon, 
   Sparkles,
-  ShieldCheck,
-  Cpu
+  ShieldCheck
 } from 'lucide-react';
 import Image from 'next/image';
 
-type TabType = 'landing' | 'home' | 'jobs' | 'post' | 'connect' | 'agreement' | 'profile' | 'admin' | 'compute';
+type TabType = 'landing' | 'home' | 'jobs' | 'post' | 'connect' | 'agreement' | 'profile' | 'admin';
 
 export const BottomDock: React.FC = () => {
   const { activeTab, setActiveTab, currentUser, isAuthenticated } = useApp();
@@ -27,7 +26,6 @@ export const BottomDock: React.FC = () => {
     { id: 'post', label: 'Post Gig', icon: PlusSquare },
     { id: 'connect', label: 'Collab', icon: Users },
     { id: 'agreement', label: 'Agreements', icon: FileText },
-    { id: 'compute', label: 'Cloud', icon: Cpu },
   ];
 
   if (currentUser.role === 'admin') {

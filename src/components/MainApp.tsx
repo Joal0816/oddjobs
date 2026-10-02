@@ -10,7 +10,6 @@ import { PostJob } from '@/components/PostJob';
 import { AgreementView } from '@/components/AgreementView';
 import { ProfileView } from '@/components/ProfileView';
 import { AdminDashboard } from '@/components/AdminDashboard';
-import { EdgeCloudConsole } from '@/components/EdgeCloudConsole';
 import { BottomDock } from '@/components/BottomDock';
 import { AuthModal } from '@/components/AuthModal';
 import { Toast } from '@/components/Toast';
@@ -31,7 +30,6 @@ export default function MainApp() {
       {activeTab === 'agreement' && <AgreementView />}
       {activeTab === 'profile' && <ProfileView />}
       {activeTab === 'admin' && <AdminDashboard />}
-      {activeTab === 'compute' && <EdgeCloudConsole />}
 
       {/* Floating Demo Persona Switcher (Student / Requester / Admin) */}
       <QuickPersonaSwitcher />
