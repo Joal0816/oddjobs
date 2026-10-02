@@ -46,6 +46,22 @@ This web application represents the functional Minimum Viable Product (MVP) deve
 - Student identity and ID verification approval queue.
 - Job listing oversight, flagged content reviews, and agreement dispute tracking.
 
+### 7. 🕷️ Automatic Career Page Import (`POST /api/crawl`)
+- Subscribing organizations paste their **public career page URL once** — no manual posting, no job board to log into.
+- **Polite crawler** (`src/lib/crawl/`) that reads only public, organization-owned pages.
+- **robots.txt honored** with the full status table: `429` ⇒ refuse, `5xx` ⇒ halt that origin, `401/403/404` ⇒ no restrictions (RFC 9309 / Google interpretation, via `robots-parser`).
+- **Ban avoidance**: one request at a time per origin, `1500ms` delay with ±25% jitter, `Crawl-delay` honored (refuses anything over 30s), exponential backoff on `5xx`, `Retry-After` honored on `429`, and hard-halt on Cloudflare challenge fingerprints or status `401/403/999/451`.
+- **Honest User-Agent** (`oddJobsCareerImporter/1.0 (+contact; email)`) so site operators can identify and allowlist the bot.
+- **SSRF guard**: rejects non-`http(s)`, credentialed URLs, and hostnames resolving to private/loopback/link-local/reserved addresses.
+- **Extraction ladder**: JSON-LD `JobPosting` → schema.org microdata → known ATS URL patterns → generic job-card selectors (`cheerio`).
+- Conditional re-fetching via `ETag` / `Last-Modified` (skips unchanged pages on `304`).
+- Imported postings merge into app state through `addJobs()` and persist to `localStorage`.
+
+### 8. 📱 Installable Progressive Web App
+- `src/app/manifest.ts` — installable manifest with `192x192` / `512x512` **any** and **maskable** icons (adaptive-mask safe zone).
+- **Service worker** (`public/sw.js`) — hand-written, dependency-free: cache-first for immutable `/_next/static`, stale-while-revalidate for navigations, bounded LRU runtime cache (60 entries), offline fallback to `/offline.html`. **Never caches `/api/*`.**
+- `appleWebApp` metadata, `viewport`/`themeColor` export, and a stray-registration-safe registrar (`src/components/RegisterSW.tsx`).
+
 ---
 
 ## 🛠️ Tech Stack Overview
