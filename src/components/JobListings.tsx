@@ -53,7 +53,8 @@ export const JobListings: React.FC = () => {
     'Photography',
     'Academic Tutoring',
     'Event Support',
-    'Errands & Logistics'
+    'Errands & Logistics',
+    'Other'
   ];
 
   const quickPrompts = [

@@ -9,9 +9,10 @@
  *      a[href*="/careers/"], a[href*="/jobs/"])
  *
  * Mapping rules (documented choices):
- *  - Postings WITHOUT a title, or whose text does not match any of the six
- *    OddJobs categories, are skipped and counted in `skipped` (no category
- *    fallback — mislabeling a job is worse than omitting it).
+ *  - Postings WITHOUT a title are skipped and counted in `skipped`.
+ *    Postings whose text does not match any of the six OddJobs categories
+ *    fall back to the `'Other'` category rather than being dropped (the
+ *    keyword rules above are intentionally not broadened).
  *  - budget: PHP salaries are used as-is; USD/EUR/... are converted with a
  *    STATIC indicative rate table (MVP only — swap for a live FX source);
  *    missing/unknown-currency salaries import as budget 0 and are reported
@@ -54,7 +55,7 @@ interface RawPosting {
 
 type MapOutcome =
   | { job: Job; noSalary: boolean; converted: boolean }
-  | { skip: 'missing_title' | 'unknown_category' };
+  | { skip: 'missing_title' };
 
 /* Placeholder art for imported postings (local assets render in next/image). */
 const IMPORTED_IMAGE = '/logo-clean.png';
@@ -293,8 +294,7 @@ function mapRawPosting(raw: RawPosting, pageUrl: string): MapOutcome {
   if (!title) return { skip: 'missing_title' };
 
   const bodyText = cleanText(raw.description, 2000);
-  const category = inferCategory(`${title} ${bodyText}`);
-  if (!category) return { skip: 'unknown_category' };
+  const category = inferCategory(`${title} ${bodyText}`) ?? 'Other';
 
   const budget = toPhpBudget(raw.salary);
   const origin = safeOrigin(pageUrl);
@@ -670,7 +670,6 @@ function finish(candidates: RawPosting[], source: CrawlSource, pageUrl: string):
   const jobs: Job[] = [];
   let skipped = 0;
   let missingTitle = 0;
-  let unknownCategory = 0;
   let noSalary = 0;
   let converted = 0;
 
@@ -682,8 +681,7 @@ function finish(candidates: RawPosting[], source: CrawlSource, pageUrl: string):
     const outcome = mapRawPosting(candidate, pageUrl);
     if ('skip' in outcome) {
       skipped += 1;
-      if (outcome.skip === 'missing_title') missingTitle += 1;
-      else unknownCategory += 1;
+      missingTitle += 1;
       continue;
     }
     if (outcome.noSalary) noSalary += 1;
@@ -697,7 +695,6 @@ function finish(candidates: RawPosting[], source: CrawlSource, pageUrl: string):
   if (skipped > 0) {
     const reasons: string[] = [];
     if (missingTitle > 0) reasons.push(`${missingTitle} without a title`);
-    if (unknownCategory > 0) reasons.push(`${unknownCategory} without a recognisable category`);
     notes.push(`Skipped ${reasons.join(' and ') || 'as unmappable'}.`);
   }
   if (noSalary > 0) notes.push(`${noSalary} had no published PHP salary (budget shown as ₱0).`);
@@ -708,8 +705,9 @@ function finish(candidates: RawPosting[], source: CrawlSource, pageUrl: string):
 
 /**
  * Run the extraction ladder against an HTML page. Stops at the first rung
- * that produces candidates; postings that cannot be mapped to a Job are
- * omitted and reported through `skipped`.
+ * that produces candidates; postings without a title are omitted and
+ * reported through `skipped`, while postings that match no category are
+ * imported under `'Other'`.
  */
 export function extractJobs(html: string, pageUrl: string): ExtractionResult {
   const jsonLd = extractJsonLd(html);

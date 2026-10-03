@@ -21,7 +21,7 @@ export interface User {
 export interface Job {
   id: string;
   title: string;
-  category: 'Web Development' | 'Photography' | 'Graphic Design' | 'Academic Tutoring' | 'Event Support' | 'Errands & Logistics';
+  category: 'Web Development' | 'Photography' | 'Graphic Design' | 'Academic Tutoring' | 'Event Support' | 'Errands & Logistics' | 'Other';
   jobType: 'Part-time' | 'Gig' | 'One-time' | 'Recurring';
   budget: number; // in PHP (₱)
   budgetUnit: 'job' | 'day' | 'hour';
@@ -134,7 +134,7 @@ export interface CampusTestimonial {
   category: 'student' | 'requester' | 'organization';
   rating: number;
   gigTitle: string;
-  gigCategory: 'Web Development' | 'Photography' | 'Graphic Design' | 'Academic Tutoring' | 'Event Support' | 'Errands & Logistics';
+  gigCategory: 'Web Development' | 'Photography' | 'Graphic Design' | 'Academic Tutoring' | 'Event Support' | 'Errands & Logistics' | 'Other';
   payoutAmount: number;
   paymentMethod: string;
   payoutStatus: string;

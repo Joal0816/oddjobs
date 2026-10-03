@@ -97,6 +97,7 @@ export const PostJob: React.FC = () => {
               <option value="Academic Tutoring">Academic Tutoring</option>
               <option value="Event Support">Event Support</option>
               <option value="Errands & Logistics">Errands & Logistics</option>
+              <option value="Other">Other</option>
             </select>
           </div>
 
